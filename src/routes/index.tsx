@@ -1,23 +1,34 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { useEffect } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import logo from "@/assets/nonno-logo.webp";
 
-// The home route ships no og:image, so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
 export const Route = createFileRoute("/")({
+  head: () => ({
+    meta: [
+      { title: "El Nonno — Sistema de ventas" },
+      { name: "description", content: "Sistema de ventas, inventario y caja de Inversiones El Nonno, C.A." },
+      { property: "og:title", content: "El Nonno — Sistema de ventas" },
+      { property: "og:description", content: "Sistema de ventas, inventario y caja de Inversiones El Nonno, C.A." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
+    ],
+  }),
   component: Index,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
 function Index() {
+  const navigate = useNavigate();
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data }) => {
+      navigate({ to: data.session ? "/inicio" : "/auth", replace: true });
+    });
+  }, [navigate]);
+
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
+    <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-sidebar text-sidebar-foreground">
+      <img src={logo} alt="El Nonno" className="h-24 w-24 animate-pulse rounded-full" />
+      <p className="font-display text-3xl font-extrabold uppercase tracking-wide text-sidebar-primary">El Nonno</p>
     </div>
   );
 }

@@ -1,0 +1,15 @@
+# Roadmap — El Nonno (POS)
+- [ ] Nube + usuarios (registro, inicio de sesión, aprobación de empleados por el admin)
+- [ ] Diseño (barra lateral azul oscuro, dorado, títulos condensados) + logo/favicon
+- [ ] Inicio
+- [ ] Mostrador (venta rápida, ticket, cobrar)
+- [ ] Ventas: cotizaciones, pedidos, facturas + asistente nuevo pedido
+- [ ] Por cobrar (deudas por cliente, registrar pago)
+- [ ] Caja del día (entradas por forma de pago, cierre del punto, cuadre)
+- [ ] Productos + Lista de precios (WhatsApp, copiar, PDF)
+- [ ] Inventario (ajustes, movimientos, mermas, vencimientos)
+- [ ] Compras + registrar compra
+- [ ] Clientes (crédito, recordar pago)
+- [ ] Reportes (ventas, más vendido, inventario, compras)
+- [ ] Configuración (tasa BCV automática, empresa, categorías con foto, usuarios)
+- [x] Usar el logo original de Instagram (@inversioneselnonno_)
