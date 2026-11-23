@@ -3,8 +3,8 @@ import type { QueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 
 /** Prime several queries before a page renders. */
-export function ensureAll(qc: QueryClient, queries: Parameters<QueryClient["ensureQueryData"]>[0][]) {
-  return Promise.all(queries.map((q) => qc.ensureQueryData(q))).then(() => undefined);
+export function ensureAll(qc: QueryClient, queries: readonly { queryKey: readonly unknown[] }[]) {
+  return Promise.all(queries.map((q) => qc.ensureQueryData(q as never))).then(() => undefined);
 }
 
 export function RouteError({ error }: ErrorComponentProps) {
@@ -36,4 +36,15 @@ export function pageHead(title: string, description: string) {
       { name: "twitter:card", content: "summary" },
     ],
   };
+}
+
+/** Placeholder for a screen that is not built yet. */
+export function ComingSoon({ title, text }: { title: string; text: string }) {
+  return (
+    <div className="mx-auto max-w-lg rounded-xl border border-dashed bg-card p-8 text-center shadow-card">
+      <h1 className="page-title">{title}</h1>
+      <p className="mt-3 text-sm text-muted-foreground">{text}</p>
+      <p className="mt-4 text-xs font-semibold uppercase text-muted-foreground">Pantalla en construcción</p>
+    </div>
+  );
 }

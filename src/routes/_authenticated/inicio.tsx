@@ -162,8 +162,8 @@ function Row({
   label: string;
   hint: string;
   value: string;
-  sub?: string;
-  tone?: "danger";
+  sub?: string | undefined;
+  tone?: "danger" | undefined;
 }) {
   return (
     <div className="flex items-center justify-between gap-4 py-3 hover:opacity-80">

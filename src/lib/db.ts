@@ -244,12 +244,12 @@ export const api = {
   },
   async upsert<T extends "products" | "clients" | "suppliers" | "categories">(table: T, row: Record<string, unknown>) {
     const { error } = row["id"]
-      ? await supabase.from(table).update(row as never).eq("id", row["id"] as string)
+      ? await supabase.from(table).update(row as never).eq("id" as never, row["id"] as never)
       : await supabase.from(table).insert(row as never);
     rpcError(error);
   },
   async remove(table: "products" | "clients" | "suppliers" | "categories", id: string) {
-    const { error } = await supabase.from(table).delete().eq("id", id);
+    const { error } = await supabase.from(table).delete().eq("id" as never, id as never);
     rpcError(error);
   },
   async updateSettings(patch: Partial<Settings>) {
