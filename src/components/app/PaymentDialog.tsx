@@ -86,6 +86,8 @@ export function PaymentDialog({
         paymentType: credit || (creditOnly && sum.missingUsd > 0) ? "credito" : "contado",
       });
       onOpenChange(false);
+    } catch {
+      // The caller already showed the error; keep the dialog open to retry.
     } finally {
       setBusy(false);
     }

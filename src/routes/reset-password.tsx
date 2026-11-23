@@ -30,7 +30,10 @@ function ResetPassword() {
     setBusy(true);
     const { error } = await supabase.auth.updateUser({ password });
     setBusy(false);
-    if (error) return toast.error("No se pudo cambiar la clave. Pide otro enlace.");
+    if (error) {
+      toast.error("No se pudo cambiar la clave. Pide otro enlace.");
+      return;
+    }
     toast.success("Clave actualizada");
     navigate({ to: "/inicio", replace: true });
   }
