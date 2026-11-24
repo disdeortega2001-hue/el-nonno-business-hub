@@ -45,3 +45,36 @@ export function summarizeTender(tender: TenderInput, totalUsd: number, rate: num
 }
 
 export const emptyTender = (): TenderInput => ({ divisas: 0, bolivares: 0, pago_movil: 0, punto: 0 });
+
+export interface OpenInvoice {
+  id: string;
+  balance: number;
+}
+
+/**
+ * Spread a client's payment over their pending invoices, oldest first.
+ * Each payment line may be split across invoices; Bs amounts are split in proportion.
+ */
+export function distributePayments(
+  invoices: OpenInvoice[],
+  payments: { method: string; amount_usd: number; amount_bs: number }[],
+): { docId: string; method: string; amount_usd: number; amount_bs: number }[] {
+  const owed = invoices.map((i) => ({ id: i.id, left: round2(i.balance) }));
+  const out: { docId: string; method: string; amount_usd: number; amount_bs: number }[] = [];
+  for (const p of payments) {
+    let usdLeft = round2(p.amount_usd);
+    let bsLeft = round2(p.amount_bs);
+    for (const inv of owed) {
+      if (usdLeft <= 0) break;
+      if (inv.left <= 0) continue;
+      const take = round2(Math.min(inv.left, usdLeft));
+      const isLast = take >= usdLeft;
+      const bs = p.amount_bs > 0 ? (isLast ? bsLeft : round2((p.amount_bs * take) / p.amount_usd)) : 0;
+      out.push({ docId: inv.id, method: p.method, amount_usd: take, amount_bs: bs });
+      inv.left = round2(inv.left - take);
+      usdLeft = round2(usdLeft - take);
+      bsLeft = round2(bsLeft - bs);
+    }
+  }
+  return out;
+}
